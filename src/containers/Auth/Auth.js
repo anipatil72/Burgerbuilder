@@ -3,10 +3,9 @@ import { connect } from "react-redux";
 
 import Input from "../../components/UI/Input/Input";
 import Button from "../../components/UI/Button/Button";
+import Spinner from "../../components/UI/Spinner/Spinner";
 import classes from "./Auth.css";
 import * as actions from "../../store/actions/index";
-
-import Spinner from "../../components/UI/Spinner/Spinner";
 
 class Auth extends Component {
   state = {
@@ -93,9 +92,7 @@ class Auth extends Component {
 
   switchAuthModeHandler = () => {
     this.setState((prevState) => {
-      return {
-        isSignup: !prevState.isSignup,
-      };
+      return { isSignup: !prevState.isSignup };
     });
   };
 
@@ -146,10 +143,10 @@ class Auth extends Component {
         <form onSubmit={this.submitHandler}>
           {form}
           <Button btnType="Success">SUBMIT</Button>
-          <Button btnType="Danger" clicked={this.switchAuthModeHandler}>
-            Switch to {this.state.isSignup ? "Sign out" : "Sign In"} ?
-          </Button>
         </form>
+        <Button clicked={this.switchAuthModeHandler} btnType="Danger">
+          SWITCH TO {this.state.isSignup ? "Sign In" : "Sign Up"}
+        </Button>
       </div>
     );
   }
@@ -158,13 +155,14 @@ class Auth extends Component {
 const mapStateToProps = (state) => {
   return {
     loading: state.auth.loading,
+    error: state.auth.error,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAuth: (email, password, isSignUp) =>
-      dispatch(actions.auth(email, password, isSignUp)),
+    onAuth: (email, password, isSignup) =>
+      dispatch(actions.auth(email, password, isSignup)),
   };
 };
 
